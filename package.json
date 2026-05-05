@@ -1,11 +1,11 @@
 {
-  "name": "ai-coding-harness",
+  "name": "agent-eyes",
   "version": "0.0.1",
   "private": true,
   "description": "A modular harness for AI coding agents",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mohanli/ai-coding-harness.git"
+    "url": "https://github.com/mohanli/agent-eyes.git"
   },
   "author": "Mohan Li",
   "license": "MIT",

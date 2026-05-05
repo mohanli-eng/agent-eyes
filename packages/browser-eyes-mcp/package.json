@@ -51,7 +51,7 @@
   "author": "Mohan Li",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mohanli/ai-coding-harness.git",
+    "url": "https://github.com/mohanli/agent-eyes.git",
     "directory": "packages/browser-eyes-mcp"
   }
 }

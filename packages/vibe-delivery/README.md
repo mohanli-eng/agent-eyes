@@ -34,7 +34,7 @@ The killer feature: the `/test` stage's agent loop can call `browser-eyes-mcp` t
 ### Installation
 
 ```bash
-# From the ai-coding-harness root
+# From the agent-eyes root
 bash packages/vibe-delivery/install.sh
 ```
 
@@ -99,7 +99,7 @@ MIT
 ### 安装
 
 ```bash
-# 从 ai-coding-harness 根目录
+# 从 agent-eyes 根目录
 bash packages/vibe-delivery/install.sh
 ```
 

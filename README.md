@@ -59,8 +59,8 @@ The `browser-eyes-mcp` is the tool that gives the inner agent loops their enviro
 
 ```bash
 # Clone and install
-git clone https://github.com/mohanli/ai-coding-harness.git
-cd ai-coding-harness
+git clone https://github.com/mohanli/agent-eyes.git
+cd agent-eyes
 pnpm install
 
 # Install browser-eyes-mcp into your Claude Code config

@@ -38,7 +38,7 @@ Add to your Claude Code MCP config:
   "mcpServers": {
     "browser-eyes": {
       "command": "npx",
-      "args": ["-y", "@mohanli/browser-eyes-mcp"]
+      "args": ["-y", "browser-eyes-mcp"]
     }
   }
 }
@@ -49,8 +49,8 @@ That's it. Claude Code will start the server on demand.
 #### Local development
 
 ```bash
-git clone https://github.com/mohanli/ai-coding-harness.git
-cd ai-coding-harness/packages/browser-eyes-mcp
+git clone https://github.com/mohanli/agent-eyes.git
+cd agent-eyes/packages/browser-eyes-mcp
 pnpm install
 pnpm exec playwright install chromium
 pnpm test
@@ -88,7 +88,7 @@ See [SPEC.md](./SPEC.md) for the complete design specification.
 
 ### Status
 
-🚧 **MVP in progress.** Currently implementing `getConsoleErrors`. Track progress in the [parent monorepo](https://github.com/mohanli/ai-coding-harness).
+🚧 **MVP in progress.** Currently implementing `getConsoleErrors`. Track progress in the [parent monorepo](https://github.com/mohanli/agent-eyes).
 
 ### License
 
@@ -126,7 +126,7 @@ AI 编码 agent 能写代码、跑测试、交付实现。但代码一旦部署,
   "mcpServers": {
     "browser-eyes": {
       "command": "npx",
-      "args": ["-y", "@mohanli/browser-eyes-mcp"]
+      "args": ["-y", "browser-eyes-mcp"]
     }
   }
 }
@@ -137,8 +137,8 @@ AI 编码 agent 能写代码、跑测试、交付实现。但代码一旦部署,
 #### 本地开发
 
 ```bash
-git clone https://github.com/mohanli/ai-coding-harness.git
-cd ai-coding-harness/packages/browser-eyes-mcp
+git clone https://github.com/mohanli/agent-eyes.git
+cd agent-eyes/packages/browser-eyes-mcp
 pnpm install
 pnpm exec playwright install chromium
 pnpm test
@@ -176,7 +176,7 @@ Claude Code: [调用 getConsoleErrors,传入 url='https://auradiet.vercel.app']
 
 ### 状态
 
-🚧 **MVP 开发中。** 正在实现 `getConsoleErrors`。在[父 monorepo](https://github.com/mohanli/ai-coding-harness) 中跟踪进度。
+🚧 **MVP 开发中。** 正在实现 `getConsoleErrors`。在[父 monorepo](https://github.com/mohanli/agent-eyes) 中跟踪进度。
 
 ### License
 
