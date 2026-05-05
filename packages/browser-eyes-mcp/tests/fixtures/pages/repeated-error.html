@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+  <head><title>Repeated Error</title></head>
+  <body>
+    <h1>This page throws the same error 50 times</h1>
+    <script>
+      for (let i = 0; i < 50; i++) {
+        console.error("TypeError: Cannot read property 'x' of undefined");
+      }
+    </script>
+  </body>
+</html>

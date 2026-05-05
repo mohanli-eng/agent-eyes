@@ -1,0 +1,22 @@
+{
+  "name": "ai-coding-harness",
+  "version": "0.0.1",
+  "private": true,
+  "description": "A modular harness for AI coding agents",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mohanli/ai-coding-harness.git"
+  },
+  "author": "Mohan Li",
+  "license": "MIT",
+  "scripts": {
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck"
+  },
+  "packageManager": "pnpm@9.0.0",
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
