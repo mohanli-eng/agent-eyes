@@ -1,5 +1,5 @@
 {
-  "name": "@mohanli/browser-eyes-mcp",
+  "name": "browser-eyes-mcp",
   "version": "0.0.1",
   "description": "An MCP server giving AI coding agents eyes to see the browser runtime",
   "keywords": [
