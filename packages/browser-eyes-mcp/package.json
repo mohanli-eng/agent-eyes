@@ -18,8 +18,7 @@
   },
   "files": [
     "dist",
-    "README.md",
-    "SPEC.md"
+    "README.md"
   ],
   "scripts": {
     "build": "tsc",

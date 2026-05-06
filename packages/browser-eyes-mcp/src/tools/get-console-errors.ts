@@ -3,8 +3,6 @@
  *
  * Open a URL in headless Chromium, observe for `waitMs` after load,
  * collect console errors/warnings, deduplicate, truncate to token budget.
- *
- * See SPEC.md section 4.1 for full specification.
  */
 
 import { ConsoleMessage } from 'playwright';

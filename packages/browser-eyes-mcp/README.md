@@ -62,9 +62,9 @@ pnpm build
 Once installed, your agent can call the tools natively:
 
 ```
-You: "Check if the deployed app at https://auradiet.vercel.app has any console errors"
+You: "Check if the deployed app at https://xxx.vercel.app has any console errors"
 
-Claude Code: [calls getConsoleErrors with url='https://auradiet.vercel.app']
+Claude Code: [calls getConsoleErrors with url='https://xxx.vercel.app']
             → returns:
               {
                 totalErrors: 3,
@@ -83,8 +83,6 @@ Claude Code: [calls getConsoleErrors with url='https://auradiet.vercel.app']
 3. **Structured compression**: deduplicate, group, summarize before returning
 4. **Stateless**: each tool call is independent; no session state to manage
 5. **Public URL first**: MVP supports HTTPS URLs only; localhost and auth deferred
-
-See [SPEC.md](./SPEC.md) for the complete design specification.
 
 ### Status
 
@@ -125,12 +123,15 @@ AI 编码 agent 能写代码、跑测试、交付实现。但代码一旦部署,
 {
   "mcpServers": {
     "browser-eyes": {
-      "command": "npx",
-      "args": ["-y", "browser-eyes-mcp"]
+      "command": "node",
+      "args": ["/absolute/path/to/ai-coding-harness/packages/browser-eyes-mcp/dist/index.js"]
     }
   }
 }
 ```
+
+将 `/absolute/path/to/` 替换为你克隆仓库的实际绝对路径。
+
 
 就这些。Claude Code 会按需启动服务。
 
@@ -150,9 +151,9 @@ pnpm build
 安装后,你的 agent 可以原生调用这些工具:
 
 ```
-你: "检查一下 https://auradiet.vercel.app 有没有 console 错误"
+你: "检查一下 https://xxx.vercel.app 有没有 console 错误"
 
-Claude Code: [调用 getConsoleErrors,传入 url='https://auradiet.vercel.app']
+Claude Code: [调用 getConsoleErrors,传入 url='https://xxx.vercel.app']
             → 返回:
               {
                 totalErrors: 3,
@@ -172,7 +173,6 @@ Claude Code: [调用 getConsoleErrors,传入 url='https://auradiet.vercel.app']
 4. **无状态**: 每次工具调用相互独立,无需管理会话状态
 5. **公网 URL 优先**: MVP 仅支持 HTTPS URL;localhost 和鉴权延后
 
-详见 [SPEC.md](./SPEC.md) 获取完整设计规范。
 
 ### 状态
 
