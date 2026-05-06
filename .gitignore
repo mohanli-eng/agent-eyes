@@ -44,3 +44,5 @@ docs/
 .claude
 
 packages/browser-eyes-mcp/SPEC.md
+
+*/**/references/
