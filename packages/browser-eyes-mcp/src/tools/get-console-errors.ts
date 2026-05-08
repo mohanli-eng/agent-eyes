@@ -1,54 +1,56 @@
 /**
- * getConsoleErrors tool implementation.
- *
- * Open a URL in headless Chromium, observe for `waitMs` after load,
- * collect console errors/warnings, deduplicate, truncate to token budget.
+ * getConsoleErrors tool — console error observation with session & one-shot modes.
  */
 
 import { ConsoleMessage } from 'playwright';
 import { createSession } from '../browser/session-manager.js';
-import {
-  truncateToTokenBudget,
-  truncateString,
-} from '../browser/truncation.js';
+import { truncateToTokenBudget, truncateString } from '../browser/truncation.js';
+import { resolveMode } from '../shared/resolve-mode.js';
+import { GetConsoleErrorsInputSchema } from '../types.js';
 import type {
   GetConsoleErrorsInput,
   GetConsoleErrorsOutput,
   GetConsoleErrorsError,
   UniqueError,
 } from '../types.js';
-
-interface CapturedMessage {
-  level: 'error' | 'warning';
-  message: string;
-  source?: string;
-  timestampMs: number;
-}
+import type { CapturedMessage } from '../browser/session-manager.js';
 
 /**
  * Main handler for the getConsoleErrors tool.
  */
 export async function getConsoleErrors(
-  input: GetConsoleErrorsInput,
+  raw: GetConsoleErrorsInput,
 ): Promise<GetConsoleErrorsOutput | GetConsoleErrorsError> {
-  const { url, waitMs, includeWarnings, maxTokens } = input;
+  const input = GetConsoleErrorsInputSchema.parse(raw);
+  const { waitMs, includeWarnings, maxTokens } = input;
 
-  // Validate URL
-  if (!url.startsWith('https://') && !url.startsWith('http://')) {
-    return {
-      error: 'INVALID_URL',
-      message: 'URL must start with http:// or https://',
-    };
+  const resolved = resolveMode(input.sessionId, input.url);
+  if ('error' in resolved) {
+    return { error: resolved.error as GetConsoleErrorsError['error'], message: resolved.message };
   }
 
-  let session;
+  // ── Session mode: query accumulated data ──────────────────────────
+  if (resolved.mode === 'session') {
+    const session = resolved.session!;
+    const allMessages = [...session.consoleMessages, ...session.pageErrors];
+    return buildOutput(
+      resolved.url,
+      Date.now() - session.createdAt,
+      allMessages,
+      includeWarnings,
+      maxTokens,
+    );
+  }
+
+  // ── One-shot mode: create browser, observe, close ─────────────────
+  const url = resolved.url;
   const captured: CapturedMessage[] = [];
   const startTime = Date.now();
+  let session;
 
   try {
     session = await createSession();
 
-    // Attach console listener BEFORE navigation
     session.page.on('console', (msg: ConsoleMessage) => {
       const type = msg.type();
       const wantedTypes = includeWarnings ? ['error', 'warning'] : ['error'];
@@ -68,7 +70,6 @@ export async function getConsoleErrors(
       });
     });
 
-    // Also catch uncaught page errors (these don't always go through console)
     session.page.on('pageerror', (err: Error) => {
       captured.push({
         level: 'error',
@@ -78,7 +79,6 @@ export async function getConsoleErrors(
       });
     });
 
-    // Navigate
     try {
       await session.page.goto(url, {
         waitUntil: 'networkidle',
@@ -92,24 +92,35 @@ export async function getConsoleErrors(
       return { error: 'NETWORK_ERROR', message };
     }
 
-    // Wait additional time for delayed errors (lazy-loaded scripts, useEffect, etc.)
     await session.page.waitForTimeout(waitMs);
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     return { error: 'CRASH', message };
   } finally {
     if (session) {
-      await session.close().catch(() => {
-        // Best-effort cleanup
-      });
+      await session.close().catch(() => {});
     }
   }
 
   const observedFor = Date.now() - startTime;
+  return buildOutput(url, observedFor, captured, includeWarnings, maxTokens);
+}
 
-  // Deduplicate
+// ── Shared output builder ─────────────────────────────────────────────
+
+function buildOutput(
+  url: string,
+  observedFor: number,
+  captured: CapturedMessage[],
+  includeWarnings: boolean,
+  maxTokens: number,
+): GetConsoleErrorsOutput {
+  const filtered = includeWarnings
+    ? captured
+    : captured.filter((m) => m.level === 'error');
+
   const uniqueMap = new Map<string, UniqueError>();
-  for (const msg of captured) {
+  for (const msg of filtered) {
     const key = `${msg.level}::${msg.message}`;
     const existing = uniqueMap.get(key);
     if (existing) {
@@ -126,15 +137,10 @@ export async function getConsoleErrors(
   }
 
   const allUnique = [...uniqueMap.values()].sort((a, b) => b.count - a.count);
+  const { kept, truncated, omittedCount } = truncateToTokenBudget(allUnique, maxTokens);
 
-  // Truncate to token budget
-  const { kept, truncated, omittedCount } = truncateToTokenBudget(
-    allUnique,
-    maxTokens,
-  );
-
-  const totalErrors = captured.filter((m) => m.level === 'error').length;
-  const totalWarnings = captured.filter((m) => m.level === 'warning').length;
+  const totalErrors = filtered.filter((m) => m.level === 'error').length;
+  const totalWarnings = filtered.filter((m) => m.level === 'warning').length;
 
   const notes: string[] = [];
   if (truncated) {
@@ -156,10 +162,6 @@ export async function getConsoleErrors(
   };
 }
 
-/**
- * Shorten a long URL/file path for display in `source` field.
- * Keeps the last 2 path segments.
- */
 function shortenSource(url: string): string {
   try {
     const parsed = new URL(url);

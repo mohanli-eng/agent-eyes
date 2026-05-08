@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>Semantic DOM</title>
+<style>/* this should be excluded */ .hidden { display: none; }</style>
+</head>
+<body>
+<!-- This comment should be excluded -->
+
+<h1>Page Title</h1>
+<h2>Section A</h2>
+<h3>Subsection A.1</h3>
+
+<main>
+  <button aria-label="Submit form">Submit</button>
+  <button>Cancel</button>
+
+  <input type="text" name="username" placeholder="Enter username">
+  <input type="email" name="email" placeholder="Enter email" aria-label="Email address">
+  <input type="checkbox" name="agree">
+
+  <a href="/about">About Us</a>
+  <a href="/contact">Contact</a>
+
+  <div role="alert">Something went wrong!</div>
+  <span role="status">Loading...</span>
+</main>
+
+<footer style="display: none;">This footer is hidden</footer>
+<section style="visibility: hidden;">This section is invisible</section>
+
+<script>// this script tag should be excluded
+  console.log('script content excluded');
+</script>
+
+</body>
+</html>

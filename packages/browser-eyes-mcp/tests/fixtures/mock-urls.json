@@ -1,0 +1,11 @@
+{
+  "urlPatterns": [
+    { "raw": "/api/users/123", "expected": "/api/users/:id" },
+    { "raw": "/api/users/456", "expected": "/api/users/:id" },
+    { "raw": "/api/products/789/reviews", "expected": "/api/products/:id/reviews" },
+    { "raw": "/assets/app.a1b2c3d4e5f6.js", "expected": "/assets/app.:hash.js" },
+    { "raw": "/api/items/550e8400-e29b-41d4-a716-446655440000", "expected": "/api/items/:uuid" },
+    { "raw": "/static/about", "expected": "/static/about" },
+    { "raw": "/", "expected": "/" }
+  ]
+}

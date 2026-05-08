@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>Early Error</title>
+<script>
+  // Sync error in <head> — tests that listener is mounted before navigation
+  console.error('Error in head script');
+</script>
+</head>
+<body><h1>Early Error Page</h1></body>
+</html>

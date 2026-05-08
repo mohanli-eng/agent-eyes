@@ -14,6 +14,42 @@ export interface BrowserSession {
   close: () => Promise<void>;
 }
 
+// ---------------------------------------------------------------------------
+// Session data — accumulates observations for the session lifetime
+// ---------------------------------------------------------------------------
+
+export interface CapturedMessage {
+  level: 'error' | 'warning';
+  message: string;
+  source?: string;
+  timestampMs: number;
+}
+
+export interface NetworkEntry {
+  url: string;
+  method: string;
+  status: number;
+  statusText: string;
+  resourceType: string;
+  startTimeMs: number;
+  durationMs: number;
+  redirectChain: Array<{ url: string; status: number }>;
+}
+
+export interface SessionData {
+  id: string;
+  url: string;
+  browserSession: BrowserSession;
+  createdAt: number;
+  consoleMessages: CapturedMessage[];
+  networkEntries: NetworkEntry[];
+  pageErrors: CapturedMessage[];
+}
+
+// ---------------------------------------------------------------------------
+// Factory
+// ---------------------------------------------------------------------------
+
 export async function createSession(): Promise<BrowserSession> {
   const browser = await chromium.launch({
     headless: true,

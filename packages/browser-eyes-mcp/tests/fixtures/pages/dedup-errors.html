@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>Dedup Errors</title></head>
+<body>
+<h1>Dedup Test — Same Message, Different Source</h1>
+<script>
+  // Same error message at different "source" locations
+  // In dynamic code (eval / inline), source lines differ
+  console.error('Cannot read properties of undefined (reading \'x\')');
+  console.error('Cannot read properties of undefined (reading \'x\')');
+  console.error('Cannot read properties of undefined (reading \'x\')');
+</script>
+</body>
+</html>

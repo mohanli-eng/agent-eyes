@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>Network Requests</title></head>
+<body>
+<h1>Network Request Fixture</h1>
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==" alt="data url">
+<script>
+  // Success request
+  fetch('/blank.html').then(r => console.log('ok:', r.status));
+
+  // 500 error
+  fetch('/api/fail').catch(() => {});
+
+  // Slow request (2s)
+  fetch('/api/slow').catch(() => {});
+
+  // Redirect
+  fetch('/old-path').catch(() => {});
+</script>
+</body>
+</html>

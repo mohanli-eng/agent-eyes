@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>Console Errors</title></head>
+<body>
+<h1>Console Error Fixture</h1>
+<script>
+  // 50 identical TypeError errors
+  for (let i = 0; i < 50; i++) {
+    try { null.foo; } catch (e) { console.error(e.message); }
+  }
+
+  // 1 ReferenceError
+  try { undefinedVar; } catch (e) { console.error(e.message); }
+
+  // 1 uncaught exception (via setTimeout so it's captured by pageerror)
+  setTimeout(() => { throw new Error('async boom'); }, 100);
+
+  // 1 console.warn
+  console.warn('This is a warning message');
+</script>
+</body>
+</html>

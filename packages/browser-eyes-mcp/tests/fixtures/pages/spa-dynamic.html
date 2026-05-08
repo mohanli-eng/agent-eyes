@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>SPA Dynamic</title></head>
+<body>
+<div id="app"><p>Loading...</p></div>
+<script>
+  // Simulate SPA: content renders after 1 second
+  setTimeout(() => {
+    document.getElementById('app').innerHTML = `
+      <h2>SPA Content Loaded</h2>
+      <button id="dynamic-btn">Click Me</button>
+      <input type="text" name="search" placeholder="Search...">
+    `;
+  }, 1000);
+</script>
+</body>
+</html>

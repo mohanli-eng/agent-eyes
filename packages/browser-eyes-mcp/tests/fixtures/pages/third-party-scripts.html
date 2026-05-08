@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>Third-Party Scripts</title></head>
+<body>
+<h1>Third-Party Script Error Fixture</h1>
+<script>
+  // Simulate a third-party tracking script that throws
+  // (inline to avoid external network dependency)
+  (function analytics() {
+    console.error('Tracking SDK: Failed to send beacon');
+    console.error('Tracking SDK: Connection timeout');
+  })();
+</script>
+</body>
+</html>
