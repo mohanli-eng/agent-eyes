@@ -73,3 +73,28 @@
 - **不得阉割功能**：不允许通过删除功能、跳过逻辑、注释掉代码来让编译或测试通过
 - **不引入新问题**：修复方案不得破坏已有通过的测试用例
 - **遇到逻辑冲突**：停止修复，向用户说明冲突所在，等待确认后继续
+
+---
+
+## 七、RAG / Evaluation 工程约束
+
+### 评估集（Golden Set）生成约束
+
+1. **数量底线**：PRD 写"N-M 题"的，必须达到下限 N。不能少。
+2. **不能凭空生成 expected_chunks**：必须通过真实数据库 lookup 获取 UUID，不能用 placeholder（如 chunk_id_N）。
+3. **不能造假 ID**：若数据库还未有数据时无法 lookup，必须在交付报告中显式标注"expected_chunks 待人工 lookup"，禁止生成假 UUID。
+4. **expected_answer_keywords 必须从源文档抽取**：不能凭 LLM 通用知识猜测，必须 grep 源 PDF 内容确认。
+
+### 评估指标实现约束
+
+1. **指标定义不能简化**：PRD 写"LLM-as-judge"的不能换成"keyword overlap"；写"Recall@K"的必须按定义算（top-K 中至少一个 expected_chunk 命中），不能换成其他公式。
+2. **简化必须显式声明**：若实现因技术限制（如 Next.js context 缺失）无法按 PRD 定义实现，必须在交付报告中：
+   - 标明实际实现 vs PRD 定义的差异
+   - 说明为什么简化
+   - 列出"完整实现需要的工作"作为 known issue
+3. **禁止暗自简化**：不能把 "keyword overlap" 命名为 "Faithfulness"——这是命名误导，等同于数据虚假陈述。
+
+### 数据污染禁令
+
+1. **禁止 target leakage**：金标准集的 expected_chunks 不能根据当前 retrieval 系统的输出反向标注。expected_chunks 应基于"内容是否真的回答了 question"的人工判断，独立于 retrieval 实现。
+2. **禁止 self-fulfilling metrics**：禁止用"系统当前输出"作为"系统应该输出"的标准。

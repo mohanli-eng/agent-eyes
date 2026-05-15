@@ -1,7 +1,0 @@
-This directory holds the constraint and reference documents that SKILL.md refers to.
-
-Required files (copy from your existing skill):
-  - coding-constraints.md
-  - test-frameworks.md
-
-After copying these in, you can delete this .placeholder file.
